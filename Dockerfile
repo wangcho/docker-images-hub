@@ -1,14 +1,4 @@
-FROM wordpress:latest
-
-RUN apt-get update && apt-get install -y unzip rsync && rm -r /var/lib/apt/lists/*
-RUN touch /usr/local/etc/php/conf.d/upload-limit.ini && echo "upload_max_filesize = 32M" >> /usr/local/etc/php/conf.d/upload-limit.ini && echo "post_max_size = 32M" >> /usr/local/etc/php/conf.d/upload-limit.ini
-
-RUN a2enmod rewrite expires
-
-VOLUME /var/www/html
-
-COPY docker-entrypoint.sh /entrypoint.sh
-
-# grr, ENTRYPOINT resets CMD now
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["apache2", "-DFOREGROUND"]
+FROM busybox:latest
+MAINTAINER James Lee jameslee@example.com
+RUN mkdir -p /var/lib/mysql && mkdir -p /var/www/html
+VOLUME ["/var/lib/mysql", "/var/www/html"]
